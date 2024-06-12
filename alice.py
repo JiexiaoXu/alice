@@ -243,6 +243,8 @@ def replay_disk_ops(initial_paths_inode_map, rows, replay_dir, stdout_file, use_
 				if line.dump_file == None:
 					buf = line.override_data
 				else:
+					if line.dump_file == '':				
+						continue
 					fd = os.open(line.dump_file, os.O_RDONLY)
 					os.lseek(fd, line.dump_offset, os.SEEK_SET)
 					buf = os.read(fd, line.count)
@@ -287,6 +289,7 @@ class Replayer:
 					return False
 				diskops_index += 1
 		return self.test_suite.test_combo_validity(included_diskops)
+
 	def __init__(self, alice_args):
 		init_aliceconfig(alice_args)
 		(self.path_inode_map, self.micro_ops) = _aliceparsesyscalls.get_micro_ops()

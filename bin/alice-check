@@ -23,6 +23,7 @@
 import argparse
 import sys
 import os
+import time
 sys.path.append(os.getenv("ALICE_HOME"))
 import subprocess
 import pickle
@@ -66,7 +67,7 @@ alice_config['checker_tool'] = args.checker
 alice_config['debug_level'] = args.debug_level
 alice_config['ignore_mmap'] = args.ignore_mmap
 
-folders = ['/run/shm/', '/dev/shm/', '/tmp', None]
+folders = ['/home/jiexiao/squint/copy_bug1/alice/data/run/', '/home/jiexiao/squint/copy_bug1/alice/data/dev/', '/home/jiexiao/squint/copy_bug1/alice/data/tmp/', None]
 for folder in folders:
 	assert(folder != None)
 	folder = os.path.join(folder, 'alice-' + str(os.getpid()))
@@ -74,6 +75,11 @@ for folder in folders:
 		alice_config['scratchpad_dir'] = folder
 		break
 
+start_time = time.time()
 alicedefaultexplorer.default_checks(alice_config, threads = args.threads)
+end_time = time.time()
+elapsed_time = end_time - start_time
+print "Check time taken: " + str(elapsed_time) + " seconds"
+
 os.system("rm -rf " + alice_config['scratchpad_dir'])
 

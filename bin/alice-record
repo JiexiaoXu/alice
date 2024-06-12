@@ -25,6 +25,7 @@ import sys
 import os
 import subprocess
 import pickle
+import time
 
 __author__ = "Thanumalayan Sankaranarayana Pillai"
 __copyright__ = "Copyright 2014, Thanumalayan Sankaranarayana Pillai"
@@ -49,7 +50,12 @@ subprocess.check_output("cp -R " + args.workload_dir + " " + os.path.join(args.t
 if args.verbose:
 	print 'Running workload with strace'
 workload_strace_command = "alice-strace -k -s 0 -ff -tt -o".split(' ') + [os.path.join(args.traces_dir, "strace.out")] + args.remainder
+
+start_time = time.time()
 subprocess.call(workload_strace_command)
+end_time = time.time()
+elapsed_time = end_time - start_time
+print "Strace elapsed time: " + str(elapsed_time)
 
 if args.verbose:
 	print 'Recording symbol information'

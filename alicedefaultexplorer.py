@@ -55,6 +55,7 @@ class MultiThreadedChecker(threading.Thread):
 		args = [aliceconfig().checker_tool, dirname, dirname + '.input_stdout', self.thread_id]
 		output_stdout = dirname + '.output_stdout'
 		output_stderr = dirname + '.output_stderr'
+
 		retcode = subprocess.call(args, stdout = open(output_stdout, 'w'), stderr = open(output_stderr, 'w'))
 		MultiThreadedChecker.outputs[crashid] = retcode
 		os.system('rm -rf ' + dirname)
@@ -124,6 +125,7 @@ def default_checks(alice_args, threads = 1):
 	atomic_patch_middle = set()
 
 	print 'Finding vulnerabilities...'
+	start_time = time.time()
 	# Finding across-syscall atomicity
 	for i in range(0, replayer.mops_len()):
 		dirname = os.path.join(aliceconfig().scratchpad_dir, 'reconstructeddir-' + str(i))
@@ -132,7 +134,7 @@ def default_checks(alice_args, threads = 1):
 		MultiThreadedChecker.check_later(dirname, i)
 
 	checker_outputs = MultiThreadedChecker.wait_and_get_outputs()
-	staticvuls = set()
+	staticvuls = dict()
 	i = 0
 	while(i < replayer.mops_len()):
 		if checker_outputs[i] != 0:
@@ -145,16 +147,18 @@ def default_checks(alice_args, threads = 1):
 			patch_end = i + 1
 			if patch_end >= replayer.mops_len():
 				patch_end = replayer.mops_len() - 1
-				print 'WARNING: Application found to be inconsistent after the entire workload completes. Recheck workload and checker. Possible bug in ALICE framework if this is not expected.'
-			print '(Dynamic vulnerability) Across-syscall atomicity, sometimes concerning durability: ' + \
+				print str(time.time() - start_time) + ' WARNING: Application found to be inconsistent after the entire workload completes. Recheck workload and checker. Possible bug in ALICE framework if this is not expected.'
+			print str(time.time() - start_time) + ' (Dynamic vulnerability) Across-syscall atomicity, sometimes concerning durability: ' + \
 				'Operations ' + str(patch_start) + ' until ' + str(patch_end) + ' need to be atomically persisted'
-			staticvuls.add((stack_repr(replayer.get_op(patch_start)),
-				stack_repr(replayer.get_op(patch_end))))
+			staticvuls[(stack_repr(replayer.get_op(patch_start)),
+				stack_repr(replayer.get_op(patch_end)))] = time.time() - start_time
+			
 		i += 1
 
-	for vul in staticvuls:
-		print '(Static vulnerability) Across-syscall atomicity: ' + \
+	for vul in staticvuls.viewkeys():
+		print str(staticvuls[vul]) + ' (Static vulnerability) Across-syscall atomicity: ' + \
 			'Operation ' + vul[0] + ' until ' + vul[1]
+	
 
 	# Finding ordering vulnerabilities
 	replayer.load(0)
@@ -180,18 +184,18 @@ def default_checks(alice_args, threads = 1):
 			replayer.dops_include((i, j))
 
 	checker_outputs = MultiThreadedChecker.wait_and_get_outputs()
-	staticvuls = set()
+	staticvuls = dict()
 	for i in range(0, replayer.mops_len()):
 		for j in range(i + 1, replayer.mops_len()):
 			if (i, j) in checker_outputs and checker_outputs[(i, j)] != 0:
-				print '(Dynamic vulnerability) Ordering: ' + \
+				print str(time.time() - start_time) + ' (Dynamic vulnerability) Ordering: ' + \
 					'Operation ' + str(i) + ' needs to be persisted before ' + str(j)
-				staticvuls.add((stack_repr(replayer.get_op(i)),
-					stack_repr(replayer.get_op(j))))
+				staticvuls[(stack_repr(replayer.get_op(i)),
+					stack_repr(replayer.get_op(j)))] = time.time() - start_time
 				break
 
-	for vul in staticvuls:
-		print '(Static vulnerability) Ordering: ' + \
+	for vul in staticvuls.viewkeys():
+		print str(staticvuls[vul]) + ' (Static vulnerability) Ordering: ' + \
 			'Operation ' + vul[0] + ' needed before ' + vul[1]
 
 	# Finding atomicity vulnerabilities
@@ -224,29 +228,29 @@ def default_checks(alice_args, threads = 1):
 
 
 	checker_outputs = MultiThreadedChecker.wait_and_get_outputs()
-	staticvuls = collections.defaultdict(lambda:set())
+	staticvuls = collections.defaultdict(lambda:dict())
 	for i in range(0, replayer.mops_len()):
-		dynamicvuls = set()
+		dynamicvuls = dict()
 		for j in range(0, replayer.dops_len(i) - 1):
 			for mode in (('count', 1), ('count', 3), ('aligned', 4096)):
 				if (mode, i, j) in checker_outputs and checker_outputs[(mode, i, j)] != 0:
-					dynamicvuls.add(atomicity_explanations[(mode, i, j)])
+					dynamicvuls[atomicity_explanations[(mode, i, j)]] = time.time() - start_time
 
 		if len(dynamicvuls) == 0:
 			for j in range(0, replayer.dops_len(i) - 1):
 				for mode in (('count', 1), ('count', 3), ('aligned', 4096)):
 					for k in range(0, j):
 						if (mode, i, j, k) in checker_outputs and checker_outputs[(mode, i, j, k)] != 0:
-							dynamicvuls.add('???')
+							dynamicvuls['???'] = time.time() - start_time
 					
 
 		if len(dynamicvuls) > 0:
-			print '(Dynamic vulnerability) Atomicity: ' + \
-				'Operation ' + str(i) + '(' + (', '.join(dynamicvuls)) + ')'
+			print str(time.time() - start_time) + ' (Dynamic vulnerability) Atomicity: ' + \
+				'Operation ' + str(i) + '(' + (', '.join(dynamicvuls.viewkeys())) + ')'
 			staticvuls[stack_repr(replayer.get_op(i))].update(dynamicvuls)
 
 	for vul in staticvuls:
-		print '(Static vulnerability) Atomicity: ' + \
+		print str(time.time() - start_time) + ' (Static vulnerability) Atomicity: ' + \
 			'Operation ' + vul + ' (' + (','.join(staticvuls[vul])) + ')'
 
 	print 'Done finding vulnerabilities.'

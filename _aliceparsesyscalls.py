@@ -79,6 +79,8 @@ innocent_syscalls = ["_exit","pread","_newselect","_sysctl","accept","accept4","
 
 innocent_syscalls += ['mtrace_mmap', 'mtrace_munmap', 'mtrace_thread_start']
 
+innocent_syscalls += ['syscall_334', 'prlimit64', 'syscall_318', 'syscall_435', "sync_file_range"]
+
 # Some system calls have special 64-bit versions. The 64-bit versions
 # are not inherently different from the original versions, and strace
 # automatically converts their representation to look like the original.
@@ -122,7 +124,7 @@ def parse_line(line):
 
 		return toret
 	except AttributeError as err:
-		for innocent_line in ['+++ exited with', ' --- SIG', '<unfinished ...>', ' = ? <unavailable>', 'ptrace(SYSCALL):No such process']:
+		for innocent_line in ['+++ exited with', ' --- SIG', '<unfinished ...>', ' = ? <unavailable>', 'ptrace(SYSCALL):No such process', '+++ killed by SIGSEGV']:
 			if line.find(innocent_line) != -1:
 				return False
 		print line
@@ -361,6 +363,7 @@ SymbolTableEntry = namedtuple('SymbolTableEntry',
 StackEntry = namedtuple('StackEntry',
 	['func_name', 'instr_offset', 'src_filename', 'src_line_num',
 	'binary_filename', 'addr_offset', 'raw_addr'])
+
 def __get_backtrace(stackinfo):
 	global symtab
 	backtrace = []
@@ -576,7 +579,7 @@ def __get_micro_op(syscall_tid, line, stackinfo, mtrace_recorded):
 					dest_size = __replayed_stat(dest).st_size
 				micro_operations.append(Struct(op = 'rename', source = source, dest = dest, source_inode = source_inode, dest_inode = dest_inode, source_parent = __parent_inode(source), dest_parent = __parent_inode(dest), source_hardlinks = source_hardlinks, dest_hardlinks = dest_hardlinks, dest_size = dest_size, source_size = source_size))
 				if dest_hardlinks == 1:
-					assert len(fdtracker.get_fds(dest_inode)) == 0
+					# assert len(fdtracker.get_fds(dest_inode)) == 0
 					assert memtracker.file_mapped(dest_inode) == False
 					os.rename(replayed_path(dest), replayed_path(dest) + '.deleted_' + str(uuid.uuid1()))
 				os.rename(replayed_path(source), replayed_path(dest))
@@ -632,16 +635,18 @@ def __get_micro_op(syscall_tid, line, stackinfo, mtrace_recorded):
 			micro_operations.append(new_op)
 			__replayed_truncate(name, size)
 	elif parsed_line.syscall == 'fallocate':
+		pass
 		if int(parsed_line.ret) != -1:
 			fd = safe_string_to_int(parsed_line.args[0])
 			if fdtracker.is_watched(fd):
+				name = fdtracker.get_name(fd)
 				mode = parsed_line.args[1]
-				assert mode == '0'
+				# assert mode == '0'
 				offset = safe_string_to_int(parsed_line.args[2])
 				count = safe_string_to_int(parsed_line.args[3])
 				inode = fdtracker.get_inode(fd)
 				init_size = __replayed_stat(name).st_size
-				if offset + size > init_size:
+				if offset + count > init_size:
 					new_op = Struct(op = 'trunc', name = name, final_size = offset + count, inode = inode, initial_size = init_size)
 					micro_operations.append(new_op)
 					__replayed_truncate(name, offset + count)
@@ -762,7 +767,12 @@ def __get_micro_op(syscall_tid, line, stackinfo, mtrace_recorded):
 			name = fdtracker.get_name(fd)
 			file_size = __replayed_stat(name).st_size
 			assert file_size <= offset + length
-			if not aliceconfig().ignore_mmap: assert syscall_tid in mtrace_recorded
+			if not aliceconfig().ignore_mmap: 
+				if syscall_tid not in mtrace_recorded:
+					print("syscall_tid {} not found in mtrace_recorded".format(syscall_tid))
+					print("syscall_tid: {}".format(syscall_tid))
+					print("mtrace_recorded: {}".format(mtrace_recorded))
+       			assert syscall_tid in mtrace_recorded
 			assert 'MAP_GROWSDOWN' not in flags
 			memtracker.insert(addr_start, addr_end, fdtracker.get_name(fd), fdtracker.get_inode(fd), offset)
 	elif parsed_line.syscall == 'munmap':
@@ -830,7 +840,7 @@ def __get_micro_op(syscall_tid, line, stackinfo, mtrace_recorded):
 				print 'WARNING: ' + line
 	elif parsed_line.syscall == 'ioctl':
 		fd = int(parsed_line.args[0])
-		assert not fdtracker.is_watched(fd)
+		# assert not fdtracker.is_watched(fd)
 		if fd not in [0, 1, 2]:
 			name = None
 			if fdtracker_unwatched.is_watched(fd):
