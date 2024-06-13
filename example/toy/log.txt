@@ -1,0 +1,31 @@
+Strace elapsed time: 0.0285470485687
+Check time taken: 1.55166196823 seconds
+
+bash toy_workload.sh 
+Updated
+Strace elapsed time: 0.0285470485687
+(alice) jiexiao@kisnis:~/squint/alice/alice/example/toy$ alice-check --traces_dir=traces_dir --checker=./toy_checker.py
+-------------------------------------------------------------------------------
+ALICE tool version 0.0.1. Please go through the documentation, particularly the
+listed caveats and limitations, before deriving any inferences from this tool. 
+-------------------------------------------------------------------------------
+Parsing traces to determine logical operations ...
+Logical operations:
+0       creat("tmp", parent=106174683, mode='0666', inode=106174685)
+1       append("tmp", offset=0, count=5, inode=106174685)
+2       rename(dest="file1", source="tmp", source_hardlinks=1, source_parent=106174683, dest_size=5, dest_hardlinks=1, source_size=5, dest_parent=106174683, source_inode=106174685, dest_inode=106174684)
+3       stdout("'Updated\n'")
+4       link(dest="link1", source="file1", source_parent=106174683, dest_parent=106174683, source_inode=106174685)
+5       link(dest="link2", source="file1", source_parent=106174683, dest_parent=106174683, source_inode=106174685)
+-------------------------------------
+Finding vulnerabilities...
+(Dynamic vulnerability) Across-syscall atomicity, sometimes concerning durability: Operations 4 until 5 need to be atomically persisted
+(Static vulnerability) Across-syscall atomicity: Operation B-/home/jiexiao/squint/alice/alice/example/toy/a.out:0x5560fe5a835b[None] until B-/home/jiexiao/squint/alice/alice/example/toy/a.out:0x5560fe5a83a5[None]
+(Dynamic vulnerability) Ordering: Operation 1 needs to be persisted before 2
+(Dynamic vulnerability) Ordering: Operation 2 needs to be persisted before 3
+(Static vulnerability) Ordering: Operation B-/home/jiexiao/squint/alice/alice/example/toy/a.out:0x5560fe5a8302[None] needed before B-/home/jiexiao/squint/alice/alice/example/toy/a.out:0x5560fe5a8342[None]
+(Static vulnerability) Ordering: Operation B-/home/jiexiao/squint/alice/alice/example/toy/a.out:0x5560fe5a827d[None] needed before B-/home/jiexiao/squint/alice/alice/example/toy/a.out:0x5560fe5a8302[None]
+(Dynamic vulnerability) Atomicity: Operation 2(destination unlinked fully, source untouched, destination and source unlinked fully, destination unlinking partial  semi-truncated (3 count splits), destination unlinking partial , destination unlinking partial fully truncated)
+(Static vulnerability) Atomicity: Operation B-/home/jiexiao/squint/alice/alice/example/toy/a.out:0x5560fe5a8302[None] (destination unlinked fully, source untouched,destination unlinking partial fully truncated,destination and source unlinked fully,destination unlinking partial ,destination unlinking partial  semi-truncated (3 count splits))
+Done finding vulnerabilities.
+Check time taken: 1.55166196823 seconds

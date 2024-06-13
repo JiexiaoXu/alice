@@ -1,0 +1,46 @@
+23:36:01.890777 execve("../a.out", [...], [/* 45 vars */]) = 0
+23:36:01.892616 brk(0)                  = 0x55610010f000
+23:36:01.893133 arch_prctl(0x3001 /* ARCH_??? */) = -1 EINVAL (Invalid argument)
+23:36:01.893475 mmap(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7f32065f0000
+23:36:01.893540 access("/etc/ld.so.preload", R_OK) = -1 ENOENT (No such file or directory)
+23:36:01.893919 openat(AT_FDCWD, "/etc/ld.so.cache", O_RDONLY|O_CLOEXEC) = 7
+23:36:01.894680 newfstatat(7, "", {st_mode=S_IFREG|0644, st_size=85735, ...}, AT_EMPTY_PATH) = 0
+23:36:01.895441 mmap(NULL, 85735, PROT_READ, MAP_PRIVATE, 7, 0) = 0x7f32065db000
+23:36:01.895484 close(7)                = 0
+23:36:01.895538 openat(AT_FDCWD, "/lib/x86_64-linux-gnu/libc.so.6", O_RDONLY|O_CLOEXEC) = 7
+23:36:01.896236 read(7, ""..., 832)     = 832
+23:36:01.896921 pread(7, ""..., 784, 64) = 784
+23:36:01.897593 pread(7, ""..., 48, 848) = 48
+23:36:01.898264 pread(7, ""..., 68, 896) = 68
+23:36:01.898934 newfstatat(7, "", {st_mode=S_IFREG|0755, st_size=2220400, ...}, AT_EMPTY_PATH) = 0
+23:36:01.899573 pread(7, ""..., 784, 64) = 784
+23:36:01.900210 mmap(NULL, 2264656, PROT_READ, MAP_PRIVATE|MAP_DENYWRITE, 7, 0) = 0x7f32063b2000
+23:36:01.900259 mprotect(0x7f32063da000, 2023424, PROT_NONE) = 0
+23:36:01.900307 mmap(0x7f32063da000, 1658880, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 7, 0x28000) = 0x7f32063da000
+23:36:01.900358 mmap(0x7f320656f000, 360448, PROT_READ, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 7, 0x1bd000) = 0x7f320656f000
+23:36:01.900402 mmap(0x7f32065c8000, 24576, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 7, 0x215000) = 0x7f32065c8000
+23:36:01.900452 mmap(0x7f32065ce000, 52816, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x7f32065ce000
+23:36:01.900513 close(7)                = 0
+23:36:01.900567 mmap(NULL, 12288, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7f32063af000
+23:36:01.900617 arch_prctl(ARCH_SET_FS, 0x7f32063af740) = 0
+23:36:01.900999 set_tid_address(0x7f32063afa10) = 427916
+23:36:01.901397 set_robust_list(0x7f32063afa20, 24) = 0
+23:36:01.901788 syscall_334(0x7f32063b00e0, 0x20, 0, 0x53053053, 0, 0) = 0
+23:36:01.901902 mprotect(0x7f32065c8000, 16384, PROT_READ) = 0
+23:36:01.901954 mprotect(0x5560fe5aa000, 4096, PROT_READ) = 0
+23:36:01.902005 mprotect(0x7f320662a000, 8192, PROT_READ) = 0
+23:36:01.902070 prlimit64(0, RLIMIT_STACK, NULL, {rlim_cur=8192*1024, rlim_max=RLIM64_INFINITY}) = 0
+23:36:01.902641 munmap(0x7f32065db000, 85735) = 0
+23:36:01.902716 openat(AT_FDCWD, "tmp", O_RDWR|O_CREAT, 0666) = 7
+23:36:01.903273 write(7, ""..., 5)      = 5
+23:36:01.903738 close(7)                = 0
+23:36:01.903782 rename("tmp", "file1")  = 0
+23:36:01.904465 newfstatat(1, "", {st_mode=S_IFCHR|0620, st_rdev=makedev(136, 11), ...}, AT_EMPTY_PATH) = 0
+23:36:01.905313 syscall_318(0x7f32065d34d8, 0x8, 0x1, 0x1000, 0x7f32065cea70, 0x7f32065f8040) = 0x8
+23:36:01.905354 brk(0)                  = 0x55610010f000
+23:36:01.906611 brk(0x556100130000)     = 0x556100130000
+23:36:01.907891 write(1, ""..., 8)      = 8
+23:36:01.908652 link("file1", "link1")  = 0
+23:36:01.909108 link("file1", "link2")  = 0
+23:36:01.909564 exit_group(0)           = ?
+23:36:01.910125 +++ exited with 0 +++

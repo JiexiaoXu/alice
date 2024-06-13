@@ -1,0 +1,354 @@
+Strace elapsed time: 0.222922086716
+Check time taken: 471.208799839 seconds
+
+bash leveldb_workload.sh 
+g++ -g -o workload workload.cc /home/jiexiao/squint/leveldb/libleveldb.a -I/home/jiexiao/squint/leveldb/include -lpthread -lsnappy
+g++ -g -o checker checker.cc /home/jiexiao/squint/leveldb/libleveldb.a -I/home/jiexiao/squint/leveldb/include -lpthread -lsnappy
+g++ -g -o init init.cc /home/jiexiao/squint/leveldb/libleveldb.a -I/home/jiexiao/squint/leveldb/include -lpthread -lsnappy
+before 4
+after 4
+before 5
+after 5
+before 6
+after 6
+before 7
+after 7
+before 8
+after 8
+before 9
+after 9
+Strace elapsed time: 0.222922086716
+(alice) jiexiao@kisnis:~/squint/alice/alice/example/leveldb$ alice-check --traces_dir=traces_dir --checker=./checker
+-------------------------------------------------------------------------------
+ALICE tool version 0.0.1. Please go through the documentation, particularly the
+listed caveats and limitations, before deriving any inferences from this tool. 
+-------------------------------------------------------------------------------
+Parsing traces to determine logical operations ...
+Logical operations:
+0       rename(dest="testdb/LOG.old", source="testdb/LOG", source_hardlinks=1, source_parent=106174684, dest_size=0, dest_hardlinks=0, source_size=195, dest_parent=106174684, source_inode=106174685, dest_inode=False)
+1       creat("testdb/LOG", parent=106174684, mode='0666', inode=106174692)
+2       append("testdb/LOG", offset=0, count=58, inode=106174692)
+3       append("testdb/LOG", offset=58, count=66, inode=106174692)
+4       trunc("testdb/000005.ldb", initial_size=4634, inode=106174688, final_size=0)
+5       append("testdb/000005.ldb", offset=0, count=2145, inode=106174688)
+6       append("testdb/000005.ldb", offset=2145, count=2145, inode=106174688)
+7       append("testdb/000005.ldb", offset=4290, count=344, inode=106174688)
+8       fdatasync("testdb/000005.ldb", size=4634, inode=106174688)
+9       append("testdb/LOG", offset=124, count=72, inode=106174692)
+10      append("testdb/LOG", offset=196, count=58, inode=106174692)
+11      append("testdb/LOG", offset=254, count=66, inode=106174692)
+12      creat("testdb/000006.ldb", parent=106174684, mode='0666', inode=106174693)
+13      append("testdb/000006.ldb", offset=0, count=2145, inode=106174693)
+14      append("testdb/000006.ldb", offset=2145, count=2145, inode=106174693)
+15      append("testdb/000006.ldb", offset=4290, count=344, inode=106174693)
+16      fdatasync("testdb/000006.ldb", size=4634, inode=106174693)
+17      append("testdb/LOG", offset=320, count=72, inode=106174692)
+18      creat("testdb/000007.log", parent=106174684, mode='0666', inode=106174694)
+19      creat("testdb/MANIFEST-000004", parent=106174684, mode='0666', inode=106174695)
+20      append("testdb/MANIFEST-000004", offset=0, count=35, inode=106174695)
+21      append("testdb/MANIFEST-000004", offset=35, count=4096, inode=106174695)
+22      append("testdb/MANIFEST-000004", offset=4131, count=12288, inode=106174695)
+23      append("testdb/MANIFEST-000004", offset=16419, count=3681, inode=106174695)
+24      fsync("testdb", size=4096, inode=106174684)
+25      fdatasync("testdb/MANIFEST-000004", size=20100, inode=106174695)
+26      creat("testdb/000004.dbtmp", parent=106174684, mode='0666', inode=106174696)
+27      append("testdb/000004.dbtmp", offset=0, count=16, inode=106174696)
+28      fdatasync("testdb/000004.dbtmp", size=16, inode=106174696)
+29      rename(dest="testdb/CURRENT", source="testdb/000004.dbtmp", source_hardlinks=1, source_parent=106174684, dest_size=16, dest_hardlinks=1, source_size=16, dest_parent=106174684, source_inode=106174696, dest_inode=106174691)
+30      append("testdb/LOG", offset=392, count=57, inode=106174692)
+31      unlink("testdb/MANIFEST-000002", parent=106174684, inode=106174690, size=50, hardlinks=1)
+32      append("testdb/LOG", offset=449, count=57, inode=106174692)
+33      unlink("testdb/000004.log", parent=106174684, inode=106174687, size=90064, hardlinks=1)
+34      append("testdb/LOG", offset=506, count=57, inode=106174692)
+35      unlink("testdb/000003.log", parent=106174684, inode=106174689, size=90064, hardlinks=1)
+36      stdout("'before 4\n'")
+37      append("testdb/000007.log", offset=0, count=4096, inode=106174694)
+38      append("testdb/000007.log", offset=4096, count=28672, inode=106174694)
+39      append("testdb/000007.log", offset=32768, count=4096, inode=106174694)
+40      append("testdb/000007.log", offset=36864, count=4096, inode=106174694)
+41      append("testdb/000007.log", offset=40960, count=4072, inode=106174694)
+42      fdatasync("testdb/000007.log", size=45032, inode=106174694)
+43      stdout("'after 4\n'")
+44      stdout("'before 5\n'")
+45      append("testdb/000007.log", offset=45032, count=4096, inode=106174694)
+46      append("testdb/000007.log", offset=49128, count=16384, inode=106174694)
+47      append("testdb/000007.log", offset=65512, count=24, inode=106174694)
+48      append("testdb/000007.log", offset=65536, count=4096, inode=106174694)
+49      append("testdb/000007.log", offset=69632, count=16384, inode=106174694)
+50      append("testdb/000007.log", offset=86016, count=4048, inode=106174694)
+51      fdatasync("testdb/000007.log", size=90064, inode=106174694)
+52      stdout("'after 5\n'")
+53      stdout("'before 6\n'")
+54      creat("testdb/000008.log", parent=106174684, mode='0666', inode=106174697)
+55      append("testdb/000008.log", offset=0, count=4096, inode=106174697)
+56      append("testdb/000008.log", offset=4096, count=28672, inode=106174697)
+57      append("testdb/000008.log", offset=32768, count=4096, inode=106174697)
+58      append("testdb/000008.log", offset=36864, count=4096, inode=106174697)
+59      append("testdb/000008.log", offset=40960, count=4072, inode=106174697)
+60      fdatasync("testdb/000008.log", size=45032, inode=106174697)
+61      creat("testdb/000009.ldb", parent=106174684, mode='0666', inode=106174698)
+62      stdout("'after 6\n'")
+63      stdout("'before 7\n'")
+64      append("testdb/000008.log", offset=45032, count=4096, inode=106174697)
+65      append("testdb/000008.log", offset=49128, count=16384, inode=106174697)
+66      append("testdb/000008.log", offset=65512, count=24, inode=106174697)
+67      append("testdb/000008.log", offset=65536, count=4096, inode=106174697)
+68      append("testdb/000009.ldb", offset=0, count=2145, inode=106174698)
+69      append("testdb/000008.log", offset=69632, count=16384, inode=106174697)
+70      append("testdb/000008.log", offset=86016, count=4048, inode=106174697)
+71      append("testdb/000009.ldb", offset=2145, count=2145, inode=106174698)
+72      fdatasync("testdb/000008.log", size=90064, inode=106174697)
+73      stdout("'after 7\n'")
+74      stdout("'before 8\n'")
+75      append("testdb/LOG", offset=563, count=74, inode=106174692)
+76      append("testdb/000009.ldb", offset=4290, count=344, inode=106174698)
+77      fdatasync("testdb/000009.ldb", size=4634, inode=106174698)
+78      fsync("testdb", size=4096, inode=106174684)
+79      unlink("testdb/000007.log", parent=106174684, inode=106174694, size=90064, hardlinks=1)
+80      creat("testdb/000010.log", parent=106174684, mode='0666', inode=106174699)
+81      creat("testdb/000011.ldb", parent=106174684, mode='0666', inode=106174700)
+82      append("testdb/000010.log", offset=0, count=4096, inode=106174699)
+83      append("testdb/000010.log", offset=4096, count=28672, inode=106174699)
+84      append("testdb/000010.log", offset=32768, count=4096, inode=106174699)
+85      append("testdb/000011.ldb", offset=0, count=2145, inode=106174700)
+86      append("testdb/000010.log", offset=36864, count=4096, inode=106174699)
+87      append("testdb/000010.log", offset=40960, count=4072, inode=106174699)
+88      append("testdb/000011.ldb", offset=2145, count=2145, inode=106174700)
+89      fdatasync("testdb/000010.log", size=45032, inode=106174699)
+90      stdout("'after 8\n'")
+91      append("testdb/000011.ldb", offset=4290, count=344, inode=106174700)
+92      stdout("'before 9\n'")
+93      fdatasync("testdb/000011.ldb", size=4634, inode=106174700)
+94      append("testdb/000010.log", offset=45032, count=4096, inode=106174699)
+95      append("testdb/000010.log", offset=49128, count=16384, inode=106174699)
+96      append("testdb/000010.log", offset=65512, count=24, inode=106174699)
+97      append("testdb/000010.log", offset=65536, count=4096, inode=106174699)
+98      append("testdb/000010.log", offset=69632, count=16384, inode=106174699)
+99      append("testdb/000010.log", offset=86016, count=4048, inode=106174699)
+100     fdatasync("testdb/000010.log", size=90064, inode=106174699)
+101     stdout("'after 9\n'")
+102     fsync("testdb", size=4096, inode=106174684)
+103     unlink("testdb/000008.log", parent=106174684, inode=106174697, size=90064, hardlinks=1)
+-------------------------------------
+Finding vulnerabilities...
+(Dynamic vulnerability) Across-syscall atomicity, sometimes concerning durability: Operations 37 until 41 need to be atomically persisted
+(Dynamic vulnerability) Across-syscall atomicity, sometimes concerning durability: Operations 45 until 50 need to be atomically persisted
+(Dynamic vulnerability) Across-syscall atomicity, sometimes concerning durability: Operations 55 until 59 need to be atomically persisted
+(Dynamic vulnerability) Across-syscall atomicity, sometimes concerning durability: Operations 64 until 70 need to be atomically persisted
+WARNING: Application found to be inconsistent after the entire workload completes. Recheck workload and checker. Possible bug in ALICE framework if this is not expected.
+(Dynamic vulnerability) Across-syscall atomicity, sometimes concerning durability: Operations 79 until 103 need to be atomically persisted
+(Static vulnerability) Across-syscall atomicity: Operation B-/home/jiexiao/squint/alice/alice/example/leveldb/workload:0x55621a111310[None] until B-/home/jiexiao/squint/alice/alice/example/leveldb/workload:0x55621a111310[None]
+(Static vulnerability) Across-syscall atomicity: Operation B-/home/jiexiao/squint/alice/alice/example/leveldb/workload:0x55621a1110fa[None] until B-/home/jiexiao/squint/alice/alice/example/leveldb/workload:0x55621a1111aa[None]
+(Dynamic vulnerability) Ordering: Operation 2 needs to be persisted before 40
+(Dynamic vulnerability) Ordering: Operation 3 needs to be persisted before 40
+(Dynamic vulnerability) Ordering: Operation 9 needs to be persisted before 40
+(Dynamic vulnerability) Ordering: Operation 10 needs to be persisted before 40
+(Dynamic vulnerability) Ordering: Operation 11 needs to be persisted before 40
+(Dynamic vulnerability) Ordering: Operation 17 needs to be persisted before 40
+(Dynamic vulnerability) Ordering: Operation 26 needs to be persisted before 40
+(Dynamic vulnerability) Ordering: Operation 29 needs to be persisted before 31
+(Dynamic vulnerability) Ordering: Operation 30 needs to be persisted before 40
+(Dynamic vulnerability) Ordering: Operation 31 needs to be persisted before 40
+(Dynamic vulnerability) Ordering: Operation 32 needs to be persisted before 40
+(Dynamic vulnerability) Ordering: Operation 33 needs to be persisted before 40
+(Dynamic vulnerability) Ordering: Operation 34 needs to be persisted before 40
+(Dynamic vulnerability) Ordering: Operation 35 needs to be persisted before 40
+(Dynamic vulnerability) Ordering: Operation 36 needs to be persisted before 40
+(Dynamic vulnerability) Ordering: Operation 43 needs to be persisted before 49
+(Dynamic vulnerability) Ordering: Operation 44 needs to be persisted before 49
+(Dynamic vulnerability) Ordering: Operation 52 needs to be persisted before 58
+(Dynamic vulnerability) Ordering: Operation 53 needs to be persisted before 58
+(Dynamic vulnerability) Ordering: Operation 61 needs to be persisted before 69
+(Dynamic vulnerability) Ordering: Operation 62 needs to be persisted before 69
+(Dynamic vulnerability) Ordering: Operation 63 needs to be persisted before 69
+(Dynamic vulnerability) Ordering: Operation 70 needs to be persisted before 71
+(Dynamic vulnerability) Ordering: Operation 73 needs to be persisted before 103
+(Dynamic vulnerability) Ordering: Operation 74 needs to be persisted before 103
+(Dynamic vulnerability) Ordering: Operation 75 needs to be persisted before 103
+(Static vulnerability) Ordering: Operation B-/home/jiexiao/squint/alice/alice/example/leveldb/workload:0x55621a0e7130[None] needed before B-/home/jiexiao/squint/alice/alice/example/leveldb/workload:0x55621a111310[None]
+(Static vulnerability) Ordering: Operation B-/home/jiexiao/squint/alice/alice/example/leveldb/workload:0x55621a1111aa[None] needed before B-/home/jiexiao/squint/alice/alice/example/leveldb/workload:0x55621a1111aa[None]
+(Static vulnerability) Ordering: Operation B-/home/jiexiao/squint/alice/alice/example/leveldb/workload:0x55621a0e7130[None] needed before B-/home/jiexiao/squint/alice/alice/example/leveldb/workload:0x55621a1110fa[None]
+(Static vulnerability) Ordering: Operation B-/home/jiexiao/squint/alice/alice/example/leveldb/workload:0x55621a0e71e3[None] needed before B-/home/jiexiao/squint/alice/alice/example/leveldb/workload:0x55621a1110fa[None]
+(Static vulnerability) Ordering: Operation B-/home/jiexiao/squint/alice/alice/example/leveldb/workload:0x55621a1118c3[None] needed before B-/home/jiexiao/squint/alice/alice/example/leveldb/workload:0x55621a111310[None]
+(Static vulnerability) Ordering: Operation B-/home/jiexiao/squint/alice/alice/example/leveldb/workload:0x55621a1107bf[None] needed before B-/home/jiexiao/squint/alice/alice/example/leveldb/workload:0x55621a1110fa[None]
+(Static vulnerability) Ordering: Operation B-/home/jiexiao/squint/alice/alice/example/leveldb/workload:0x55621a0e71e3[None] needed before B-/home/jiexiao/squint/alice/alice/example/leveldb/workload:0x55621a111310[None]
+(Static vulnerability) Ordering: Operation B-/home/jiexiao/squint/alice/alice/example/leveldb/workload:0x55621a111310[None] needed before B-/home/jiexiao/squint/alice/alice/example/leveldb/workload:0x55621a1110fa[None]
+(Static vulnerability) Ordering: Operation B-/home/jiexiao/squint/alice/alice/example/leveldb/workload:0x55621a1132d4[None] needed before B-/home/jiexiao/squint/alice/alice/example/leveldb/workload:0x55621a1110fa[None]
+(Static vulnerability) Ordering: Operation B-/home/jiexiao/squint/alice/alice/example/leveldb/workload:0x55621a1132d4[None] needed before B-/home/jiexiao/squint/alice/alice/example/leveldb/workload:0x55621a111310[None]
+(Dynamic vulnerability) Atomicity: Operation 29(destination unlinking partial  semi-truncated (3 count splits), destination unlinking partial , destination unlinking partial fully truncated)
+(Dynamic vulnerability) Atomicity: Operation 41(zero written semi-expanded (3 count splits), garbage written, zero written, garbage written semi-expanded (3 count splits))
+(Dynamic vulnerability) Atomicity: Operation 50(zero written semi-expanded (3 count splits), garbage written, zero written, garbage written semi-expanded (3 count splits))
+(Dynamic vulnerability) Atomicity: Operation 59(zero written semi-expanded (3 count splits), garbage written, zero written, garbage written semi-expanded (3 count splits))
+(Dynamic vulnerability) Atomicity: Operation 70(zero written semi-expanded (3 count splits), garbage written, zero written, garbage written semi-expanded (3 count splits))
+(Static vulnerability) Atomicity: Operation B-/home/jiexiao/squint/alice/alice/example/leveldb/workload:0x55621a1111aa[None] (garbage written semi-expanded (3 count splits),zero written,garbage written,zero written semi-expanded (3 count splits))
+(Static vulnerability) Atomicity: Operation B-/home/jiexiao/squint/alice/alice/example/leveldb/workload:0x55621a1118c3[None] (destination unlinking partial  semi-truncated (3 count splits),destination unlinking partial ,destination unlinking partial fully truncated)
+Done finding vulnerabilities.
+Check time taken: 471.208799839 seconds
+
+
+alice) jiexiao@kisnis:~/squint/alice/alice/example/leveldb$ alice-check --traces_dir=traces_dir --checker=./checker
+-------------------------------------------------------------------------------
+ALICE tool version 0.0.1. Please go through the documentation, particularly the
+listed caveats and limitations, before deriving any inferences from this tool. 
+-------------------------------------------------------------------------------
+Parsing traces to determine logical operations ...
+Logical operations:
+0       rename(dest="testdb/LOG.old", source="testdb/LOG", source_hardlinks=1, source_parent=109659605, dest_size=0, dest_hardlinks=0, source_size=195, dest_parent=109659605, source_inode=109659615, dest_inode=False)
+1       creat("testdb/LOG", parent=109659605, mode='0666', inode=109659625)
+2       append("testdb/LOG", offset=0, count=58, inode=109659625)
+3       append("testdb/LOG", offset=58, count=66, inode=109659625)
+4       trunc("testdb/000005.ldb", initial_size=4634, inode=109659621, final_size=0)
+5       append("testdb/000005.ldb", offset=0, count=2145, inode=109659621)
+6       append("testdb/000005.ldb", offset=2145, count=2145, inode=109659621)
+7       append("testdb/000005.ldb", offset=4290, count=344, inode=109659621)
+8       fdatasync("testdb/000005.ldb", size=4634, inode=109659621)
+9       append("testdb/LOG", offset=124, count=72, inode=109659625)
+10      append("testdb/LOG", offset=196, count=58, inode=109659625)
+11      append("testdb/LOG", offset=254, count=66, inode=109659625)
+12      creat("testdb/000006.ldb", parent=109659605, mode='0666', inode=109659626)
+13      append("testdb/000006.ldb", offset=0, count=2145, inode=109659626)
+14      append("testdb/000006.ldb", offset=2145, count=2145, inode=109659626)
+15      append("testdb/000006.ldb", offset=4290, count=344, inode=109659626)
+16      fdatasync("testdb/000006.ldb", size=4634, inode=109659626)
+17      append("testdb/LOG", offset=320, count=72, inode=109659625)
+18      creat("testdb/000007.log", parent=109659605, mode='0666', inode=109659627)
+19      creat("testdb/MANIFEST-000004", parent=109659605, mode='0666', inode=109659628)
+20      append("testdb/MANIFEST-000004", offset=0, count=35, inode=109659628)
+21      append("testdb/MANIFEST-000004", offset=35, count=4096, inode=109659628)
+22      append("testdb/MANIFEST-000004", offset=4131, count=12288, inode=109659628)
+23      append("testdb/MANIFEST-000004", offset=16419, count=3681, inode=109659628)
+24      fsync("testdb", size=4096, inode=109659605)
+25      fdatasync("testdb/MANIFEST-000004", size=20100, inode=109659628)
+26      creat("testdb/000004.dbtmp", parent=109659605, mode='0666', inode=109659629)
+27      append("testdb/000004.dbtmp", offset=0, count=16, inode=109659629)
+28      fdatasync("testdb/000004.dbtmp", size=16, inode=109659629)
+29      rename(dest="testdb/CURRENT", source="testdb/000004.dbtmp", source_hardlinks=1, source_parent=109659605, dest_size=16, dest_hardlinks=1, source_size=16, dest_parent=109659605, source_inode=109659629, dest_inode=109659624)
+30      append("testdb/LOG", offset=392, count=57, inode=109659625)
+31      unlink("testdb/MANIFEST-000002", parent=109659605, inode=109659623, size=50, hardlinks=1)
+32      append("testdb/LOG", offset=449, count=57, inode=109659625)
+33      unlink("testdb/000004.log", parent=109659605, inode=109659620, size=90064, hardlinks=1)
+34      append("testdb/LOG", offset=506, count=57, inode=109659625)
+35      unlink("testdb/000003.log", parent=109659605, inode=109659622, size=90064, hardlinks=1)
+36      stdout("'before 4\n'")
+37      append("testdb/000007.log", offset=0, count=4096, inode=109659627)
+38      append("testdb/000007.log", offset=4096, count=28672, inode=109659627)
+39      append("testdb/000007.log", offset=32768, count=4096, inode=109659627)
+40      append("testdb/000007.log", offset=36864, count=4096, inode=109659627)
+41      append("testdb/000007.log", offset=40960, count=4072, inode=109659627)
+42      fdatasync("testdb/000007.log", size=45032, inode=109659627)
+43      stdout("'after 4\n'")
+44      stdout("'before 5\n'")
+45      append("testdb/000007.log", offset=45032, count=4096, inode=109659627)
+46      append("testdb/000007.log", offset=49128, count=16384, inode=109659627)
+47      append("testdb/000007.log", offset=65512, count=24, inode=109659627)
+48      append("testdb/000007.log", offset=65536, count=4096, inode=109659627)
+49      append("testdb/000007.log", offset=69632, count=16384, inode=109659627)
+50      append("testdb/000007.log", offset=86016, count=4048, inode=109659627)
+51      fdatasync("testdb/000007.log", size=90064, inode=109659627)
+52      stdout("'after 5\n'")
+53      stdout("'before 6\n'")
+54      creat("testdb/000008.log", parent=109659605, mode='0666', inode=109659630)
+55      append("testdb/000008.log", offset=0, count=4096, inode=109659630)
+56      append("testdb/000008.log", offset=4096, count=28672, inode=109659630)
+57      append("testdb/000008.log", offset=32768, count=4096, inode=109659630)
+58      append("testdb/000008.log", offset=36864, count=4096, inode=109659630)
+59      append("testdb/000008.log", offset=40960, count=4072, inode=109659630)
+60      fdatasync("testdb/000008.log", size=45032, inode=109659630)
+61      creat("testdb/000009.ldb", parent=109659605, mode='0666', inode=109659631)
+62      stdout("'after 6\n'")
+63      stdout("'before 7\n'")
+64      append("testdb/000008.log", offset=45032, count=4096, inode=109659630)
+65      append("testdb/000008.log", offset=49128, count=16384, inode=109659630)
+66      append("testdb/000008.log", offset=65512, count=24, inode=109659630)
+67      append("testdb/000008.log", offset=65536, count=4096, inode=109659630)
+68      append("testdb/000009.ldb", offset=0, count=2145, inode=109659631)
+69      append("testdb/000008.log", offset=69632, count=16384, inode=109659630)
+70      append("testdb/000008.log", offset=86016, count=4048, inode=109659630)
+71      append("testdb/000009.ldb", offset=2145, count=2145, inode=109659631)
+72      fdatasync("testdb/000008.log", size=90064, inode=109659630)
+73      stdout("'after 7\n'")
+74      stdout("'before 8\n'")
+75      append("testdb/LOG", offset=563, count=74, inode=109659625)
+76      append("testdb/000009.ldb", offset=4290, count=344, inode=109659631)
+77      fdatasync("testdb/000009.ldb", size=4634, inode=109659631)
+78      fsync("testdb", size=4096, inode=109659605)
+79      unlink("testdb/000007.log", parent=109659605, inode=109659627, size=90064, hardlinks=1)
+80      creat("testdb/000010.log", parent=109659605, mode='0666', inode=109659632)
+81      creat("testdb/000011.ldb", parent=109659605, mode='0666', inode=109659633)
+82      append("testdb/000010.log", offset=0, count=4096, inode=109659632)
+83      append("testdb/000010.log", offset=4096, count=28672, inode=109659632)
+84      append("testdb/000010.log", offset=32768, count=4096, inode=109659632)
+85      append("testdb/000011.ldb", offset=0, count=2145, inode=109659633)
+86      append("testdb/000010.log", offset=36864, count=4096, inode=109659632)
+87      append("testdb/000011.ldb", offset=2145, count=2145, inode=109659633)
+88      append("testdb/000010.log", offset=40960, count=4072, inode=109659632)
+89      fdatasync("testdb/000010.log", size=45032, inode=109659632)
+90      stdout("'after 8\n'")
+91      append("testdb/000011.ldb", offset=4290, count=344, inode=109659633)
+92      fdatasync("testdb/000011.ldb", size=4634, inode=109659633)
+93      stdout("'before 9\n'")
+94      append("testdb/000010.log", offset=45032, count=4096, inode=109659632)
+95      append("testdb/000010.log", offset=49128, count=16384, inode=109659632)
+96      append("testdb/000010.log", offset=65512, count=24, inode=109659632)
+97      append("testdb/000010.log", offset=65536, count=4096, inode=109659632)
+98      append("testdb/000010.log", offset=69632, count=16384, inode=109659632)
+99      append("testdb/000010.log", offset=86016, count=4048, inode=109659632)
+100     fdatasync("testdb/000010.log", size=90064, inode=109659632)
+101     stdout("'after 9\n'")
+102     fsync("testdb", size=4096, inode=109659605)
+103     unlink("testdb/000008.log", parent=109659605, inode=109659630, size=90064, hardlinks=1)
+-------------------------------------
+Finding vulnerabilities...
+17.7590608597 (Dynamic vulnerability) Across-syscall atomicity, sometimes concerning durability: Operations 37 until 41 need to be atomically persisted
+17.7619538307 (Dynamic vulnerability) Across-syscall atomicity, sometimes concerning durability: Operations 45 until 50 need to be atomically persisted
+17.7630689144 (Dynamic vulnerability) Across-syscall atomicity, sometimes concerning durability: Operations 55 until 59 need to be atomically persisted
+17.7640948296 (Dynamic vulnerability) Across-syscall atomicity, sometimes concerning durability: Operations 64 until 70 need to be atomically persisted
+17.7651329041 WARNING: Application found to be inconsistent after the entire workload completes. Recheck workload and checker. Possible bug in ALICE framework if this is not expected.
+17.765141964 (Dynamic vulnerability) Across-syscall atomicity, sometimes concerning durability: Operations 79 until 103 need to be atomically persisted
+17.7651450634 (Static vulnerability) Across-syscall atomicity: Operation B-/home/jiexiao/squint/alice/alice/example/leveldb/workload:0x55884934e310[None] until B-/home/jiexiao/squint/alice/alice/example/leveldb/workload:0x55884934e310[None]
+17.7641010284 (Static vulnerability) Across-syscall atomicity: Operation B-/home/jiexiao/squint/alice/alice/example/leveldb/workload:0x55884934e0fa[None] until B-/home/jiexiao/squint/alice/alice/example/leveldb/workload:0x55884934e1aa[None]
+174.448462009 (Dynamic vulnerability) Ordering: Operation 2 needs to be persisted before 40
+174.451513052 (Dynamic vulnerability) Ordering: Operation 3 needs to be persisted before 40
+174.452579021 (Dynamic vulnerability) Ordering: Operation 9 needs to be persisted before 40
+174.453589916 (Dynamic vulnerability) Ordering: Operation 10 needs to be persisted before 40
+174.454572916 (Dynamic vulnerability) Ordering: Operation 11 needs to be persisted before 40
+174.455950975 (Dynamic vulnerability) Ordering: Operation 17 needs to be persisted before 40
+174.456976891 (Dynamic vulnerability) Ordering: Operation 26 needs to be persisted before 40
+174.457810879 (Dynamic vulnerability) Ordering: Operation 29 needs to be persisted before 31
+174.458562851 (Dynamic vulnerability) Ordering: Operation 30 needs to be persisted before 40
+174.459457874 (Dynamic vulnerability) Ordering: Operation 31 needs to be persisted before 40
+174.460199833 (Dynamic vulnerability) Ordering: Operation 32 needs to be persisted before 40
+174.461103916 (Dynamic vulnerability) Ordering: Operation 33 needs to be persisted before 40
+174.461855888 (Dynamic vulnerability) Ordering: Operation 34 needs to be persisted before 40
+174.462759972 (Dynamic vulnerability) Ordering: Operation 35 needs to be persisted before 40
+174.463510036 (Dynamic vulnerability) Ordering: Operation 36 needs to be persisted before 40
+174.46427083 (Dynamic vulnerability) Ordering: Operation 43 needs to be persisted before 49
+174.465060949 (Dynamic vulnerability) Ordering: Operation 44 needs to be persisted before 49
+174.465852022 (Dynamic vulnerability) Ordering: Operation 52 needs to be persisted before 58
+174.466802835 (Dynamic vulnerability) Ordering: Operation 53 needs to be persisted before 58
+174.46757102 (Dynamic vulnerability) Ordering: Operation 61 needs to be persisted before 69
+174.468380928 (Dynamic vulnerability) Ordering: Operation 62 needs to be persisted before 69
+174.469105959 (Dynamic vulnerability) Ordering: Operation 63 needs to be persisted before 69
+174.469857931 (Dynamic vulnerability) Ordering: Operation 70 needs to be persisted before 71
+174.470816851 (Dynamic vulnerability) Ordering: Operation 73 needs to be persisted before 103
+174.47140789 (Dynamic vulnerability) Ordering: Operation 74 needs to be persisted before 103
+174.471982956 (Dynamic vulnerability) Ordering: Operation 75 needs to be persisted before 103
+174.461860895 (Static vulnerability) Ordering: Operation B-/home/jiexiao/squint/alice/alice/example/leveldb/workload:0x5588493502d4[None] needed before B-/home/jiexiao/squint/alice/alice/example/leveldb/workload:0x55884934e0fa[None]
+174.471987963 (Static vulnerability) Ordering: Operation B-/home/jiexiao/squint/alice/alice/example/leveldb/workload:0x5588493502d4[None] needed before B-/home/jiexiao/squint/alice/alice/example/leveldb/workload:0x55884934e310[None]
+174.462764025 (Static vulnerability) Ordering: Operation B-/home/jiexiao/squint/alice/alice/example/leveldb/workload:0x55884934e310[None] needed before B-/home/jiexiao/squint/alice/alice/example/leveldb/workload:0x55884934e0fa[None]
+174.471411943 (Static vulnerability) Ordering: Operation B-/home/jiexiao/squint/alice/alice/example/leveldb/workload:0x558849324130[None] needed before B-/home/jiexiao/squint/alice/alice/example/leveldb/workload:0x55884934e310[None]
+174.468385935 (Static vulnerability) Ordering: Operation B-/home/jiexiao/squint/alice/alice/example/leveldb/workload:0x5588493241e3[None] needed before B-/home/jiexiao/squint/alice/alice/example/leveldb/workload:0x55884934e0fa[None]
+174.470820904 (Static vulnerability) Ordering: Operation B-/home/jiexiao/squint/alice/alice/example/leveldb/workload:0x5588493241e3[None] needed before B-/home/jiexiao/squint/alice/alice/example/leveldb/workload:0x55884934e310[None]
+174.457815886 (Static vulnerability) Ordering: Operation B-/home/jiexiao/squint/alice/alice/example/leveldb/workload:0x55884934e8c3[None] needed before B-/home/jiexiao/squint/alice/alice/example/leveldb/workload:0x55884934e310[None]
+174.469862938 (Static vulnerability) Ordering: Operation B-/home/jiexiao/squint/alice/alice/example/leveldb/workload:0x55884934e1aa[None] needed before B-/home/jiexiao/squint/alice/alice/example/leveldb/workload:0x55884934e1aa[None]
+174.467576027 (Static vulnerability) Ordering: Operation B-/home/jiexiao/squint/alice/alice/example/leveldb/workload:0x55884934d7bf[None] needed before B-/home/jiexiao/squint/alice/alice/example/leveldb/workload:0x55884934e0fa[None]
+174.469110966 (Static vulnerability) Ordering: Operation B-/home/jiexiao/squint/alice/alice/example/leveldb/workload:0x558849324130[None] needed before B-/home/jiexiao/squint/alice/alice/example/leveldb/workload:0x55884934e0fa[None]
+447.581966877 (Dynamic vulnerability) Atomicity: Operation 29(destination unlinking partial  semi-truncated (3 count splits), destination unlinking partial , destination unlinking partial fully truncated)
+447.583693027 (Dynamic vulnerability) Atomicity: Operation 41(zero written semi-expanded (3 count splits), garbage written, zero written, garbage written semi-expanded (3 count splits))
+447.584478855 (Dynamic vulnerability) Atomicity: Operation 50(zero written semi-expanded (3 count splits), garbage written, zero written, garbage written semi-expanded (3 count splits))
+447.585195065 (Dynamic vulnerability) Atomicity: Operation 59(zero written semi-expanded (3 count splits), garbage written, zero written, garbage written semi-expanded (3 count splits))
+447.585960865 (Dynamic vulnerability) Atomicity: Operation 70(zero written semi-expanded (3 count splits), garbage written, zero written, garbage written semi-expanded (3 count splits))
+447.586568832 (Static vulnerability) Atomicity: Operation B-/home/jiexiao/squint/alice/alice/example/leveldb/workload:0x55884934e1aa[None] (garbage written semi-expanded (3 count splits),zero written,garbage written,zero written semi-expanded (3 count splits))
+447.586578846 (Static vulnerability) Atomicity: Operation B-/home/jiexiao/squint/alice/alice/example/leveldb/workload:0x55884934e8c3[None] (destination unlinking partial  semi-truncated (3 count splits),destination unlinking partial ,destination unlinking partial fully truncated)
+Done finding vulnerabilities.
+Check time taken: 447.921972036 seconds

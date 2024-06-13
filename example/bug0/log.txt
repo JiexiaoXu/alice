@@ -1,0 +1,88 @@
+Strace elapsed time: 0.211230993271
+Check time taken: 122.95625186 seconds
+
+(alice) jiexiao@kisnis:~/squint/alice/alice/example/bug0$ bash workload.bash
+g++ -g -o workload workload.cc /home/jiexiao/squint/leveldb/out-static/libleveldb.a -I/home/jiexiao/squint/leveldb/include -lpthread -lsnappy
+g++ -g -o checker checker.cc /home/jiexiao/squint/leveldb/out-static/libleveldb.a -I/home/jiexiao/squint/leveldb/include -lpthread -lsnappy
+g++ -g -o init init.cc /home/jiexiao/squint/leveldb/out-static/libleveldb.a -I/home/jiexiao/squint/leveldb/include -lpthread -lsnappy
+before 4
+after 4
+before 5
+after 5
+before 6
+after 6
+before 7
+after 7
+before 8
+after 8
+before 9
+after 9
+Strace elapsed time: 0.211230993271
+(alice) jiexiao@kisnis:~/squint/alice/alice/example/bug0$ alice-check --traces_dir=traces_dir --checker=./checker
+-------------------------------------------------------------------------------
+ALICE tool version 0.0.1. Please go through the documentation, particularly the
+listed caveats and limitations, before deriving any inferences from this tool. 
+-------------------------------------------------------------------------------
+Parsing traces to determine logical operations ...
+Logical operations:
+0       rename(dest="testdb/LOG.old", source="testdb/LOG", source_hardlinks=1, source_parent=109594501, dest_size=0, dest_hardlinks=0, source_size=195, dest_parent=109594501, source_inode=109594502, dest_inode=False)
+1       creat("testdb/LOG", parent=109594501, mode='0666', inode=109594509)
+2       append("testdb/LOG", offset=0, count=58, inode=109594509)
+3       append("testdb/LOG", offset=58, count=66, inode=109594509)
+4       trunc("testdb/000005.ldb", initial_size=4634, inode=109594505, final_size=0)
+5       append("testdb/000005.ldb", offset=0, count=2145, inode=109594505)
+6       append("testdb/000005.ldb", offset=2145, count=2145, inode=109594505)
+7       append("testdb/000005.ldb", offset=4290, count=344, inode=109594505)
+8       fdatasync("testdb/000005.ldb", size=4634, inode=109594505)
+9       append("testdb/LOG", offset=124, count=72, inode=109594509)
+10      append("testdb/LOG", offset=196, count=58, inode=109594509)
+11      append("testdb/LOG", offset=254, count=66, inode=109594509)
+12      creat("testdb/000006.ldb", parent=109594501, mode='0666', inode=109594510)
+13      append("testdb/000006.ldb", offset=0, count=2145, inode=109594510)
+14      append("testdb/000006.ldb", offset=2145, count=2145, inode=109594510)
+15      append("testdb/000006.ldb", offset=4290, count=344, inode=109594510)
+16      fdatasync("testdb/000006.ldb", size=4634, inode=109594510)
+17      append("testdb/LOG", offset=320, count=72, inode=109594509)
+18      creat("testdb/000007.log", parent=109594501, mode='0666', inode=109594511)
+19      creat("testdb/MANIFEST-000004", parent=109594501, mode='0666', inode=109594512)
+20      append("testdb/MANIFEST-000004", offset=0, count=35, inode=109594512)
+21      append("testdb/MANIFEST-000004", offset=35, count=4096, inode=109594512)
+22      append("testdb/MANIFEST-000004", offset=4131, count=12288, inode=109594512)
+23      append("testdb/MANIFEST-000004", offset=16419, count=3681, inode=109594512)
+24      fsync("testdb", size=4096, inode=109594501)
+25      fdatasync("testdb/MANIFEST-000004", size=20100, inode=109594512)
+26      creat("testdb/000004.dbtmp", parent=109594501, mode='0666', inode=109594513)
+27      append("testdb/000004.dbtmp", offset=0, count=16, inode=109594513)
+28      fdatasync("testdb/000004.dbtmp", size=16, inode=109594513)
+29      rename(dest="testdb/CURRENT", source="testdb/000004.dbtmp", source_hardlinks=1, source_parent=109594501, dest_size=16, dest_hardlinks=1, source_size=16, dest_parent=109594501, source_inode=109594513, dest_inode=109594508)
+30      append("testdb/LOG", offset=392, count=57, inode=109594509)
+31      unlink("testdb/MANIFEST-000002", parent=109594501, inode=109594507, size=50, hardlinks=1)
+32      append("testdb/LOG", offset=449, count=57, inode=109594509)
+33      unlink("testdb/000004.log", parent=109594501, inode=109594504, size=90064, hardlinks=1)
+34      append("testdb/LOG", offset=506, count=57, inode=109594509)
+35      unlink("testdb/000003.log", parent=109594501, inode=109594506, size=90064, hardlinks=1)
+36      stdout("'before 4\n'")
+37      append("testdb/000007.log", offset=0, count=24, inode=109594511)
+38      fdatasync("testdb/000007.log", size=24, inode=109594511)
+39      stdout("'after 4\n'")
+40      stdout("'before 5\n'")
+41      append("testdb/000007.log", offset=24, count=24, inode=109594511)
+42      stdout("'after 5\n'")
+43      stdout("'before 6\n'")
+44      append("testdb/000007.log", offset=48, count=24, inode=109594511)
+45      fdatasync("testdb/000007.log", size=72, inode=109594511)
+46      stdout("'after 6\n'")
+47      stdout("'before 7\n'")
+48      append("testdb/000007.log", offset=72, count=24, inode=109594511)
+49      stdout("'after 7\n'")
+50      stdout("'before 8\n'")
+51      append("testdb/000007.log", offset=96, count=24, inode=109594511)
+52      fdatasync("testdb/000007.log", size=120, inode=109594511)
+53      stdout("'after 8\n'")
+54      stdout("'before 9\n'")
+55      append("testdb/000007.log", offset=120, count=24, inode=109594511)
+56      stdout("'after 9\n'")
+-------------------------------------
+Finding vulnerabilities...
+Done finding vulnerabilities.
+Check time taken: 122.95625186 seconds
